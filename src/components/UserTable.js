@@ -15,20 +15,20 @@ function UserTable() {
     const [showEditModal, setShowEditModal] = useState(false)
 
 
-    function addModalHandle() {
+    const addModalHandle = useCallback(() => {
         if(showEditModal) {
             setShowEditModal(false)
         }
         setShowAddMModal(true)
-    }
+    },[showEditModal])
 
-    function onEdit(id){
+    const onEdit = useCallback((id) =>{
         setShowEditModal(true)
         setSelectedID(id)
         if(showAddModal) {
             setShowAddMModal(false)
         }
-    }
+    },[showAddModal])
 
     const handleDelete = useCallback((id)=>{
         axios.delete(`http://localhost:3005/users/${id}`)
@@ -38,11 +38,10 @@ function UserTable() {
     useEffect(() => {
         axios.get("http://localhost:3005/users")
             .then(response => {
-                console.log(response.data)
                 setData(response.data.users);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
     }, []);
 
